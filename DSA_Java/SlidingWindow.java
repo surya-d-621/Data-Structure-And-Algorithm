@@ -1,5 +1,5 @@
 package DSA_Java;
-
+import java.util.Arrays;
 class SlidingWindow {
 
     public static int findSubArrayWithLeastAverage(int[] A, int B) {
@@ -139,12 +139,66 @@ Subarray between [4, 5] has minimum average
         return count;
     }
 
+
+    public static void totalSumOfAllPossibleSubarrays(int[] A){
+        int len = A.length;
+
+       // Brute force
+        int bfResult = 0;
+        for(int i = 0; i < len; i++){
+
+            for(int j =i; j< len; j++){
+                    int sum = 0;
+                for(int k = i; k <= j; k++){
+                        sum += A[k];
+                }
+
+                bfResult += sum;
+
+            }
+
+        }
+//            System.out.println("BFResult: " + bfResult);
+
+        //time- O(n3), Space - O(1)
+        //-----
+
+
+        //Prefix Sum
+        int[] pfArray = new int[len];
+        int pfResult = 0;
+
+        pfArray[0] = A[0];
+        for(int i=1; i<len;i++){
+                pfArray[i] = pfArray[i -1] + A[i];
+        }
+
+
+        for(int i = 0; i< len; i++){
+
+            for(int j=i; j < len; j++){
+
+                    if( i == 0){
+                        pfResult = pfArray[j];
+                    }else{
+                        pfResult = pfArray[j] - pfArray[i-1];
+                    }
+            }
+        }
+
+        System.out.println(Arrays.toString(pfArray));
+
+    }
+
     public static void main(String[] args) {
         int[] A1 = {3, 7, 90, 20, 10, 50, 40};
         int B1 = 3;
-        System.out.println("findSubArrayWithLeastAverage: " + findSubArrayWithLeastAverage(A1, B1));
+//        System.out.println("findSubArrayWithLeastAverage: " + findSubArrayWithLeastAverage(A1, B1));
 
 
-        System.out.println("countGoodSubarrays: " + countGoodSubarrays(A1, B1));  // Expected: 6
+//        System.out.println("countGoodSubarrays: " + countGoodSubarrays(A1, B1));  // Expected: 6
+
+        int[] totalSumArray = {3,2,5};
+        totalSumOfAllPossibleSubarrays(totalSumArray);
     }
 }
